@@ -1,0 +1,52 @@
+calculatrice polonaise inverse
+pile d'opérandes avec les quelles intéragir
+méthodeo objets
+abstraire opérations
+opérations inclus dans les objets ( ex: additionner nombres)
+2 types objets : objets empilables, pile_rpl (le deuxieme est la pile, le premeir els chiffres poar ex cf.photo)
+
+interface utilisateur : manipuler pile, empiler opérande
+
+
+au début on fait ça avec entiers mais l'idée est de généraliser l'objet en entier
+
+pour autres objets : (vecteurs 3 dim, nombres complexes, etc...)
+
+exemple manipulations : 
+
+instancier une pile 
+push (empiler), pop (dépiler), drop (comme pop mais sans renvoyer), swap (les deux en haut de pile sont inversés) -> pour la pileRPL
+add (+) , sous(-), mult -> opérations sur les deux éléments en haut de la pile
+-> ça dépend de l'objet
+
+PileRPL.java
+ObjEmp.java
+
+propositions : utiliser un tableau objets empilables (nb_obj_max = taille du tableau d'éléments de type ObjEmp)
+nbObj : pointeur de haut de pile
+
+erreur si objet en plus de la taille max
+erreur si opérateur alors que pile vide doonc pas d'opérande
+
+la pile en ascii : c'est le toString de la pileRPL (boucle for
+le premier élément : c'est le tostring de l'objEmp numéro 1 
+si 2 types d'objets -> exception 
+clear la pile aussi : nbObj à 0 :w
+
+
+v0 : cf. photo, il faut "juste" que les 2 fichiers fonctionnent en les executant 
+interpreteur de commandes dans un second temps 
+
+isEmpty
+isFull
+
+
+rendre ça interactif :
+rentrer commande une  à une dans l'interpreteur (état de la pile à chaque commande)
+et aussi chainer commande histoire d'avoir le suivi "en direct" au fil de la saisie (string tokeniser pour ça)
+façon calculette de la gauche vers la droite 
+-> on peut utiliser switch/case avec des strings pour parser les commandes
+
+classe calcRPL, loop (tant que saisie) quelle commandes sont rentrées (ne pas oublier un quit histire de sortir de l'interpréteu)
+
+la suite : le faire en http (mode réseau)
