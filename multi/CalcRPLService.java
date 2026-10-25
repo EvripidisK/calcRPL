@@ -7,6 +7,7 @@ public class CalcRPLService extends Thread {
 	private static int dimensionPartagee = 0;
 	private static Object verrou = new Object();
 	private static List<PrintStream> clients = new ArrayList<PrintStream>();
+	private static PileRPL pileCommune = new PileRPL();
 
 	private Socket socket;
 	private PileRPL pile;
@@ -19,10 +20,14 @@ public class CalcRPLService extends Thread {
 	private BufferedReader entree;
 	private PrintStream sortie;
 
-	public CalcRPLService(Socket socket, PileRPL pile, boolean partage) {
+	public CalcRPLService(Socket socket, boolean partage) {
 		this.socket = socket;
-		this.pile = pile;
 		this.partage = partage;
+		if (partage == true) {
+			this.pile = pileCommune;
+		} else {
+			this.pile = new PileRPL();
+		}
 	}
 
 	private void envoyerPile() {

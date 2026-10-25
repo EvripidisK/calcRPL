@@ -31,11 +31,6 @@ public class ServerCalcRPL {
 			}
 		}
 
-		PileRPL pilePartagee = null;
-		if (partage == true) {
-			pilePartagee = new PileRPL();
-		}
-
 		ServerSocket serveur = new ServerSocket(5000);
 		System.out.println("Serveur en ecoute sur le port " + serveur.getLocalPort() + " (mode " + mode + ")");
 
@@ -43,14 +38,7 @@ public class ServerCalcRPL {
 			Socket client = serveur.accept();
 			System.out.println("Nouvelle connexion : " + client.getInetAddress().getHostAddress());
 
-			PileRPL pile;
-			if (partage == true) {
-				pile = pilePartagee;
-			} else {
-				pile = new PileRPL();
-			}
-
-			CalcRPLService service = new CalcRPLService(client, pile, partage);
+			CalcRPLService service = new CalcRPLService(client, partage);
 			service.start();
 		}
 	}
