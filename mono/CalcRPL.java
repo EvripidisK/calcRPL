@@ -29,7 +29,10 @@ public class CalcRPL {
 	public CalcRPL(ModeUser modeUser, ModeLog modeLog) {
 		this.modeUser = modeUser;
 		this.modeLog  = modeLog;
+		init();
+	}
 
+	private void init() {
 		setLocal();
 		if (modeUser == ModeUser.REMOTE) {
 			setRemote();
@@ -44,6 +47,10 @@ public class CalcRPL {
 			System.err.println("Erreur : impossible d'ouvrir le fichier de log.");
 			System.exit(1);
 		}
+		this.pile = new PileRPL();
+	}
+
+	void mainLoop() {
 		outputStream.println("Commandes disponibles :");
 		outputStream.println(">> nombre(s)-> empile un nouvel objet. Pour une dimension 2 ou 3,");
 		outputStream.println(">> taper autant de nombres que la dimension, séparés");
@@ -51,10 +58,9 @@ public class CalcRPL {
 		outputStream.println(">>  + - * swap drop clear -> opérations sur la pile");
 		outputStream.println(">> quit-> quitter");
 		outputStream.println(">> setlocal / setremote -> changer de mode de connexion");
-		this.pile      = new PileRPL();
 		this.dimension = demanderDimension();
 		this.reserve   = new int[this.dimension];
-		mainLoop();
+		parser();
 	}
 
 	private String lireLigneUtilisateur() throws IOException {
@@ -242,18 +248,10 @@ public class CalcRPL {
 		}
 	}
 
-	void mainLoop() {
-		parser();
-	}
-
-	private static void usage() {
-		System.err.println("Usage : java CalcRPL [-user={local,remote}] [-log={none,rec,replay}]");
-		System.err.println("  -user doit venir en premier, -log en second. Les deux sont optionnels.");
-	}
-
 	public static void main(String[] args) {
 		if (args.length > 2) {
-			usage();
+			System.err.println("Usage : java CalcRPL [-user={local,remote}] [-log={none,rec,replay}]");
+			System.err.println("  -user doit venir en premier, -log en second. Les deux sont optionnels.");
 			System.exit(1);
 		}
 
@@ -262,7 +260,8 @@ public class CalcRPL {
 
 		if (args.length >= 1) {
 			if (!args[0].startsWith("-user=")) {
-				usage();
+				System.err.println("Usage : java CalcRPL [-user={local,remote}] [-log={none,rec,replay}]");
+				System.err.println("  -user doit venir en premier, -log en second. Les deux sont optionnels.");
 				System.exit(1);
 			}
 			String valeur = args[0].substring("-user=".length());
@@ -271,14 +270,16 @@ public class CalcRPL {
 			} else if (valeur.equals("remote")) {
 				modeUser = ModeUser.REMOTE;
 			} else {
-				usage();
+				System.err.println("Usage : java CalcRPL [-user={local,remote}] [-log={none,rec,replay}]");
+				System.err.println("  -user doit venir en premier, -log en second. Les deux sont optionnels.");
 				System.exit(1);
 			}
 		}
 
 		if (args.length == 2) {
 			if (!args[1].startsWith("-log=")) {
-				usage();
+				System.err.println("Usage : java CalcRPL [-user={local,remote}] [-log={none,rec,replay}]");
+				System.err.println("  -user doit venir en premier, -log en second. Les deux sont optionnels.");
 				System.exit(1);
 			}
 			String valeur = args[1].substring("-log=".length());
@@ -289,11 +290,13 @@ public class CalcRPL {
 			} else if (valeur.equals("replay")) {
 				modeLog = ModeLog.REPLAY;
 			} else {
-				usage();
+				System.err.println("Usage : java CalcRPL [-user={local,remote}] [-log={none,rec,replay}]");
+				System.err.println("  -user doit venir en premier, -log en second. Les deux sont optionnels.");
 				System.exit(1);
 			}
 		}
 
-		new CalcRPL(modeUser, modeLog);
+		CalcRPL calc = new CalcRPL(modeUser, modeLog);
+		calc.mainLoop();
 	}
 }

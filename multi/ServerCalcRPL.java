@@ -9,25 +9,32 @@ public class ServerCalcRPL {
 		String mode = "shared";
 
 		if (args.length > 1) {
-			usage();
+			System.err.println("Usage : java ServerCalcRPL [-stack={shared,multiple}]");
+			System.err.println("  L'option est facultative ; par défaut la pile est partagée (shared).");
 			System.exit(1);
 		}
 		if (args.length == 1) {
 			String arg = args[0];
 			if (arg.startsWith("-stack=") == false) {
-				usage();
+				System.err.println("Usage : java ServerCalcRPL [-stack={shared,multiple}]");
+				System.err.println("  L'option est facultative ; par défaut la pile est partagée (shared).");
 				System.exit(1);
 			}
 			String valeur = arg.substring(arg.indexOf("=") + 1);
-			if (valeur.equals("shared")) {
-				partage = true;
-				mode = "shared";
-			} else if (valeur.equals("multiple")) {
-				partage = false;
-				mode = "multiple";
-			} else {
-				usage();
-				System.exit(1);
+			switch (valeur) {
+				case "shared":
+					partage = true;
+					mode = "shared";
+					break;
+				case "multiple":
+					partage = false;
+					mode = "multiple";
+					break;
+				default:
+					System.err.println("Usage : java ServerCalcRPL [-stack={shared,multiple}]");
+					System.err.println("  L'option est facultative ; par défaut la pile est partagée (shared).");
+					System.exit(1);
+					break;
 			}
 		}
 
@@ -41,10 +48,5 @@ public class ServerCalcRPL {
 			CalcRPLService service = new CalcRPLService(client, partage);
 			service.start();
 		}
-	}
-
-	private static void usage() {
-		System.err.println("Usage : java ServerCalcRPL [-stack={shared,multiple}]");
-		System.err.println("  L'option est facultative ; par défaut la pile est partagée (shared).");
 	}
 }
